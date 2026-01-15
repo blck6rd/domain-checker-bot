@@ -8,3 +8,9 @@ DOMAINS_FILE = "domains.json"
 
 # Порог предупреждения (дни до истечения)
 EXPIRY_WARNING_DAYS = 31
+
+# Разрешённые пользователи (chat_id)
+ALLOWED_USERS = [
+    380479327,  # Vlad0sMiner
+    41468700,   # @blck6rd
+]

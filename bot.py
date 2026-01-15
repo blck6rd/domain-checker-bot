@@ -19,7 +19,7 @@ from telegram.ext import (
     filters,
 )
 
-from config import BOT_TOKEN, EXPIRY_WARNING_DAYS
+from config import BOT_TOKEN, EXPIRY_WARNING_DAYS, ALLOWED_USERS
 from domain_manager import DomainManager
 from whois_checker import check_domain, format_domain_info
 
@@ -53,6 +53,13 @@ BTN_FIND = "🔎 Найти домен"
 BTN_ACCOUNTS = "👤 Аккаунты"
 BTN_HELP = "❓ Помощь"
 BTN_CANCEL = "❌ Отмена"
+
+
+# === Проверка доступа ===
+
+def is_allowed(user_id: int) -> bool:
+    """Проверяет, разрешён ли доступ пользователю."""
+    return user_id in ALLOWED_USERS
 
 
 # === Управление пользователями ===
@@ -147,7 +154,13 @@ async def daily_check(context: ContextTypes.DEFAULT_TYPE):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start."""
-    add_user(update.effective_chat.id)
+    user_id = update.effective_chat.id
+
+    if not is_allowed(user_id):
+        await update.message.reply_text(f"⛔ Доступ запрещён.\nВаш ID: {user_id}")
+        return
+
+    add_user(user_id)
 
     stats = domain_manager.get_stats()
     welcome_text = f"""Привет! Я бот для проверки доменов.
@@ -164,7 +177,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик всех текстовых сообщений."""
-    add_user(update.effective_chat.id)
+    user_id = update.effective_chat.id
+
+    if not is_allowed(user_id):
+        await update.message.reply_text(f"⛔ Доступ запрещён.\nВаш ID: {user_id}")
+        return ConversationHandler.END
+
+    add_user(user_id)
     text = update.message.text
 
     if text == BTN_CHECK_ALL:
@@ -487,6 +506,12 @@ async def handle_domain_edit_new(update: Update, context: ContextTypes.DEFAULT_T
 async def inline_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик inline-кнопок."""
     query = update.callback_query
+    user_id = query.from_user.id
+
+    if not is_allowed(user_id):
+        await query.answer("⛔ Доступ запрещён", show_alert=True)
+        return ConversationHandler.END
+
     await query.answer()
 
     action = query.data
