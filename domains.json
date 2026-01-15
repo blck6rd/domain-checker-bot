@@ -1,10 +1,100 @@
 {
-  "domains": [
-    "google.ru",
-    "github.com",
-    "example.com",
-    "python.org",
-    "telegram.org",
-    "google.com"
-  ]
+  "accounts": {
+    "miyamuraxshiro@gmail.com": [
+      "admdea.com",
+      "ded0.com",
+      "ded7.net",
+      "dedai.io",
+      "dedai.pro",
+      "dedapp.net",
+      "dedapp.org",
+      "dedcl.com",
+      "dedguard.net",
+      "dedimba.tech",
+      "dedip.net",
+      "dedip.tech",
+      "dedone.net",
+      "dedpanel.com",
+      "dedprivacy.org",
+      "ded.pro",
+      "dedproxy.com",
+      "dedproxy.info",
+      "ded-sec.com",
+      "dedshield.net",
+      "ded.team",
+      "dedtop.com",
+      "dedtop.net",
+      "dedtry.com",
+      "dedturbo.net",
+      "dedvpn.io",
+      "dedx.io",
+      "deltafolder.org",
+      "files-ded.com",
+      "grampshelp.com",
+      "gramps.tech",
+      "teh-ded.com"
+    ],
+    "ruslan.vpn@mail.ru": [
+      "analytics-collector.ru",
+      "app-telemetry.ru",
+      "bazavpn.com",
+      "cf-mts.ru",
+      "cloudflare-mzr.ru",
+      "dedpay.ru",
+      "dedvpn.ru",
+      "dpi-tsp-gateaway.ru",
+      "ipfs-cloudflare.ru",
+      "ipfsmts.ru",
+      "memvpn.com",
+      "metrics-service.ru",
+      "yota-api-v283.ru",
+      "youtube-api-v283.ru"
+    ],
+    "bazavpn@mail.ru": [
+      "bichvpn.ru",
+      "dedinfo.com",
+      "ded-ios.ru",
+      "dedspeed.com",
+      "ded-vpn.com",
+      "grampvpn.com"
+    ],
+    "bomjvpn@mail.ru": [
+      "bomjvpn.com",
+      "dedbot.ru",
+      "dedhelp.com",
+      "googlebardapi.ru",
+      "googlebards.ru",
+      "googledns203.ru",
+      "teleapns213.ru"
+    ],
+    "eldar.shum99@gmail.com": [
+      "gramps-app-api.com",
+      "grampsvpn.com",
+      "jsnld29.com"
+    ],
+    "eldar.shumaher@icloud.com": [
+      "sdl21.ru",
+      "shmpld88.ru",
+      "shumsrv38.ru",
+      "shumvld13.ru",
+      "shumvpn.com",
+      "shumvpn.ru"
+    ],
+    "shumaher.vpn@mail.ru": [
+      "ded-pay.com",
+      "dedvpn.su",
+      "google-api-b.com",
+      "googleuserapi.ru",
+      "kfka.ru",
+      "megafon-apn32.ru",
+      "mts-play1.ru",
+      "mts-prom1.ru",
+      "pdf-helper.ru",
+      "proverka-information.ru",
+      "proverka-informer.ru",
+      "tele2apn.ru",
+      "tele2apns.ru",
+      "yota-4.ru"
+    ]
+  }
 }
