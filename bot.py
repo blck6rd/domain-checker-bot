@@ -337,13 +337,13 @@ async def show_accounts(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     keyboard = []
     for account, domains in accounts.items():
-        keyboard.append([InlineKeyboardButton(
-            f"📧 {account} ({len(domains)})",
-            callback_data=f"acc_{account[:50]}"
-        )])
+        keyboard.append([
+            InlineKeyboardButton(f"📋 {account} ({len(domains)})", callback_data=f"acc_{account[:30]}"),
+            InlineKeyboardButton("🔍", callback_data=f"chkacc_{account[:30]}")
+        ])
 
     await update.message.reply_text(
-        "👤 Выбери аккаунт для просмотра доменов:",
+        "👤 Аккаунты:\n📋 - список доменов\n🔍 - проверить WHOIS",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -499,7 +499,7 @@ async def inline_button_handler(update: Update, context: ContextTypes.DEFAULT_TY
         # Находим полный email по префиксу
         account = None
         for acc in accounts.keys():
-            if acc.startswith(account_prefix) or acc[:50] == account_prefix:
+            if acc.startswith(account_prefix) or acc[:30] == account_prefix:
                 account = acc
                 break
 
@@ -517,6 +517,53 @@ async def inline_button_handler(update: Update, context: ContextTypes.DEFAULT_TY
                 message += f"\n... и ещё {len(domains) - 50}"
 
             await query.edit_message_text(message)
+        else:
+            await query.edit_message_text("Аккаунт не найден.")
+
+    # Проверка WHOIS доменов аккаунта
+    elif action.startswith("chkacc_"):
+        account_prefix = action[7:]
+        accounts = domain_manager.get_all_accounts()
+
+        account = None
+        for acc in accounts.keys():
+            if acc.startswith(account_prefix) or acc[:30] == account_prefix:
+                account = acc
+                break
+
+        if account and account in accounts:
+            domains = accounts[account]
+            await query.edit_message_text(f"⏳ Проверяю {len(domains)} доменов аккаунта {account}...")
+
+            results = []
+            expiring_count = 0
+
+            for domain in domains:
+                info = check_domain(domain, EXPIRY_WARNING_DAYS)
+                results.append(format_domain_info(info))
+                if info.is_expiring_soon:
+                    expiring_count += 1
+
+            message = f"📧 {account}\n\n"
+            message += "\n\n".join(results)
+
+            if expiring_count > 0:
+                message += f"\n\n⚠️ {expiring_count} доменов истекают!"
+
+            # Разбиваем на части если слишком длинное
+            if len(message) > 4000:
+                first_msg = f"📧 {account} ({len(domains)} доменов)\n\n"
+                first_msg += "\n\n".join(results[:5])
+                await query.edit_message_text(first_msg)
+
+                for i in range(5, len(results), 5):
+                    chunk = "\n\n".join(results[i:i+5])
+                    await query.message.reply_text(chunk)
+
+                if expiring_count > 0:
+                    await query.message.reply_text(f"⚠️ {expiring_count} доменов истекают!")
+            else:
+                await query.edit_message_text(message)
         else:
             await query.edit_message_text("Аккаунт не найден.")
 
