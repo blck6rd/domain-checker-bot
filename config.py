@@ -13,4 +13,5 @@ EXPIRY_WARNING_DAYS = 31
 ALLOWED_USERS = [
     380479327,  # Vlad0sMiner
     41468700,   # @blck6rd
+    7890543236, # @trousgr99
 ]
